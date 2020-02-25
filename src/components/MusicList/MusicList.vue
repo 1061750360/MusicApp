@@ -152,6 +152,7 @@
     left: 0;
     right: 0;
     background: @theme-background-color;
+    z-index: 99;
     > .top-box{
       position: relative;
       height: 40px;

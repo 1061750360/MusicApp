@@ -16,15 +16,15 @@
             <div class="rotate-img" :class="rotateImg" ref="rotateImg">
               <img :src="currentSong.image" alt="">
             </div>
-          </div>
-          <div class="lyric-box">
-            <div class="lyric">{{playingLyric}}</div>
+            <div class="lyric-box">
+              <div class="lyric">{{playingLyric}}</div>
+            </div>
           </div>
         </div>
         <scroll class="right-box" :data="currentLyric && currentLyric.lines" ref="lyricList">
           <div class="lyric">
             <div v-if="currentLyric">
-              <p ref="lyricLine" class="txt" :class="{'current': currentLineNum === index}" v-for="(line, index) in currentLyric.lines" v-html="line.txt"></p>
+              <p ref="lyricLine" class="txt" :class="{'current': currentLineNum === index}" v-for="(line, index) in currentLyric.lines" :key="index" v-html="line.txt"></p>
             </div>
           </div>
         </scroll>
@@ -62,15 +62,15 @@
     </transition>
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen && currentIndex !== -1" @click="openFullScreen">
-      <div class="icon">
-        <img :class="rotateImg" :src="currentSong.image" alt="">
+        <div class="icon">
+          <img :class="rotateImg" :src="currentSong.image" alt="">
+        </div>
+        <div class="song">{{currentSong.name}}</div>
+        <p-circle :percent="percent">
+          <div class="play-control" :class="playIcon" @click.stop="togglePlaying"></div>
+        </p-circle>
+        <div class="play-list iconfont icon-bofangliebiao" @click.stop="showPlayList"></div>
       </div>
-      <div class="song">{{currentSong.name}}</div>
-      <p-circle :percent="percent">
-        <div class="play-control" :class="playIcon" @click.stop="togglePlaying"></div>
-      </p-circle>
-      <div class="play-list iconfont icon-bofangliebiao" @click.stop="showPlayList"></div>
-    </div>
     </transition>
     <play-list ref="playList"></play-list>
     <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
@@ -501,13 +501,27 @@
         position: relative;
         width: 100%;
         height: 0;
-        padding-top: 80%;
+        padding-top: 100%;
         > .img-box{
           position: absolute;
-          left: 10%;
-          top: 0;
-          width: 80%;
-          height: 100%;
+          left: 15%;
+          top: 10%;
+          width: 70%;
+          height: 70%;
+          > .lyric-box{
+            position: absolute;
+            bottom: -30px;
+            left: 10%;
+            width: 80%;
+            overflow: hidden;
+            text-align: center;
+            > .lyric{
+              height: 20px;
+              line-height: 20px;
+              font-size: 14px;
+              color: hsla(0,0%,100%,.5);
+            }
+          }
           > .rotate-img{
             position: relative;
             width: 100%;
@@ -523,18 +537,6 @@
               height: 100%;
               border-radius: 50%;
             }
-          }
-        }
-        > .lyric-box{
-          width: 80%;
-          margin: 30px auto 0;
-          overflow: hidden;
-          text-align: center;
-          > .lyric{
-            height: 20px;
-            line-height: 20px;
-            font-size: 14px;
-            color: hsla(0,0%,100%,.5);
           }
         }
       }
@@ -562,7 +564,7 @@
     }
     > .bottom{
       position: absolute;
-      bottom: 50px;
+      bottom: 10px;
       width: 100%;
       > .dot-wrapper{
         text-align: center;

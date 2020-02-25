@@ -198,6 +198,7 @@
       border-radius: 10px;
       width: 20px;
       box-sizing: border-box;
+      z-index: 9;
       > ul{
         display: flex;
         flex-direction: column;
