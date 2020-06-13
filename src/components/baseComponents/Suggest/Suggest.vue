@@ -19,7 +19,6 @@
 
 <script>
   import {createSong} from '../../../assets/js/Song'
-  import {getVkey} from "../../../api/recommend"
   import Scroll from '../Scroll/Scroll'
   import Loading from '../Loading/Loading'
   import NoResult from '../NoResult/NoResult'
@@ -115,13 +114,7 @@
             if(data.song){
               data.song.list.forEach((item) => {
                 if(item.id){
-                  getVkey(item.mid).then((res) => {
-                    let vkey = res.data.items[0].vkey
-                    let newSongmid = res.data.items[0].songmid
-                    this.result.push(createSong(item,vkey,newSongmid))
-                  }).catch((err) => {
-                    this.result.push(createSong(item, "", ""))
-                  })
+                  this.result.push(createSong(item))
                 }
               })
             }

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-
+// 歌曲类
 export default class Song {
   constructor({id, mid, singer, name, album, duration, image, url}){
     this.id = id
@@ -37,12 +37,11 @@ export default class Song {
 
   }
 }
-export function createSong(musicData,vkey,newSongmid) {
-  let url
-  if(!vkey){
-    url = ""
-  }else{
-    url = `http://dl.stream.qqmusic.qq.com/C400${newSongmid}.m4a?vkey=${vkey}&guid=7175649092&uin=0&fromtag=66`
+
+// 返回歌曲类的实例，工厂函数
+export function createSong(musicData) {
+  if (musicData.musicData) {
+    musicData = musicData.musicData
   }
   return new Song({
     id: musicData.songid || musicData.id,
@@ -51,11 +50,12 @@ export function createSong(musicData,vkey,newSongmid) {
     name: musicData.songname || musicData.name,
     album: musicData.albumname ? musicData.albumname : (musicData.album ? musicData.album.name : ""),
     duration: musicData.interval,
-    image: `https://y.gtimg.cn/music/photo_new/T001R300x300M000${musicData.singer[0].mid}.jpg?max_age=2592000`,
-    url: url
+    image: `https://y.gtimg.cn/music/photo_new/T001R300x300M000${musicData.singer[0].mid}.jpg?max_age=2592000`
+    // url: vkey ? `https://ws.stream.qqmusic.qq.com/${vkey}` : ""
   })
 }
 
+// 返回这首歌曲所有歌手的名字，用“/”拼接，如： “林俊杰/王菲”
 function filterSinger(singer) {
   let ret = []
   if(!singer){

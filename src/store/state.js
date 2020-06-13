@@ -5,8 +5,8 @@ const state = {
   singer: {},
   playing: false,
   fullScreen: false,
-  playList: [],
-  sequenceList: [],
+  playList: [], // 播放列表
+  sequenceList: [],  // 随机播放的顺序
   mode: playMode.sequence,
   currentIndex: -1,
   disc: {},

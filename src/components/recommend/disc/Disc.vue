@@ -10,7 +10,6 @@
   import MusicList from "../../MusicList/MusicList"
   import {mapGetters} from 'vuex'
   import {createSong} from "../../../assets/js/Song"
-  import {getVkey} from "../../../api/recommend"
 
 
   export default {
@@ -31,20 +30,14 @@
             this.songs = this._normalSongsList(cdlist[0].songlist)
           }
         }).catch((err) => {
-          console.log("加载歌曲列表失败")
+          console.log(err, "加载歌曲列表失败")
         })
       },
       _normalSongsList(list){
         let ret = []
         list.forEach((item) => {
           if(item.id){
-            getVkey(item.mid).then((res) => {
-              let vkey = res.data.items[0].vkey
-              let newSongmid = res.data.items[0].songmid
-              ret.push(createSong(item,vkey,newSongmid))
-            }).catch((err) => {
-              ret.push(createSong(item, "", ""))
-            })
+            ret.push(createSong(item))
           }
         })
         return ret

@@ -22,6 +22,7 @@ export const playlistMixin = {
     }
   },
   methods: {
+    // 该方法用于解决底部播放栏遮挡scroll的内容
     handlePlaylist(){
       throw new Error('component must implement handlePlaylist method')
     }

@@ -90,6 +90,7 @@
   import {playMode} from "../../assets/js/config"
   // 导入动画包create-keyframe-animation
   import animations from 'create-keyframe-animation'
+  import {getVkey} from "../../api/recommend";
 
 
   const processBtnWidth = 16
@@ -153,7 +154,6 @@
       afterLeave(){
         this.$refs.rotateImg.style.transition = ''
         this.$refs.rotateImg.style['transform'] = ''
-
       },
       togglePlaying(){
         if(!this.songReady){
@@ -367,7 +367,6 @@
         'currentIndex',
       ])
     },
-    // "http://dl.stream.qqmusic.qq.com/C400001qvvgF38HVc4.m4a?vkey=&guid=7175649092&uin=0&fromtag=66"
     watch: {
       currentSong(newSong, oldSong){
         if(!newSong.id){
@@ -376,27 +375,34 @@
         if(newSong.id === oldSong.id){
           return
         }
-        if(this.currentLyric){
-          this.currentLyric.stop()
-        }
-        clearTimeout(this.timer)
-        // 加载歌词并播放歌曲
-        this.timer = setTimeout(() => {
-          this.currentSong.getLyric(this.currentSong.id).then((lyric) => {
-            if(this.currentSong.lyric !== lyric){
-              return
-            }
-            this.currentLyric = new Lyric(lyric, this.handleLyric)
-            if(this.playing && this.songReady){
-              this.currentLyric.play()
-            }
-          }).catch(() => {
-            this.currentLyric = null
-            this.playingLyric = ""
-            this.currentLineNum = 0
-          })
-          this.$refs.audio.play()
-        }, 1000)
+        getVkey(newSong.mid).then((res) => {
+          console.log(res, 'dddd')
+          newSong.url = "https://ws.stream.qqmusic.qq.com/" + res.data.req_0.data.midurlinfo[0].purl
+          if(this.currentLyric){
+            this.currentLyric.stop()
+          }
+          clearTimeout(this.timer)
+          // 加载歌词并播放歌曲
+          this.timer = setTimeout(() => {
+            this.currentSong.getLyric(this.currentSong.id).then((lyric) => {
+              if(this.currentSong.lyric !== lyric){
+                return
+              }
+              this.currentLyric = new Lyric(lyric, this.handleLyric)
+              if(this.playing && this.songReady){
+                this.currentLyric.play()
+              }
+            }).catch(() => {
+              this.currentLyric = null
+              this.playingLyric = ""
+              this.currentLineNum = 0
+            })
+            this.$refs.audio.play()
+          }, 1000)
+        }).catch((err) => {
+          console.log(err,"ee")
+        })
+        console.log(newSong, 'uuu')
       },
       playing(newVal){
         const audio = this.$refs.audio

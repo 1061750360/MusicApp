@@ -7,7 +7,6 @@
 <script>
   import MusicList from "../../MusicList/MusicList"
   import {mapGetters} from 'vuex'
-  import {getVkey} from "../../../api/recommend"
   import {createSong} from "../../../assets/js/Song"
 
 
@@ -45,13 +44,7 @@
         let ret = []
         list.forEach((item) => {
           if(item.data.songid){
-            getVkey(item.data.songmid).then((res) => {
-              let vkey = res.data.items[0].vkey
-              let newSongmid = res.data.items[0].songmid
-              ret.push(createSong(item.data,vkey,newSongmid))
-            }).catch((err) => {
-              ret.push(createSong(item.data, "", ""))
-            })
+            ret.push(createSong(item.data))
           }
         })
         return ret

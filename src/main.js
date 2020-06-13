@@ -5,16 +5,19 @@ import store from './store/index'
 import VueLazyLoad from 'vue-lazyload'
 import axios from 'axios'
 
+import '../src/api/qqMusicSign'
+
 // 导入字体图标文件
 import './assets/fonts/iconfont.css'
+//导入base.less样式表
+import './assets/less/base.less'
+import './assets/less/variables.less'
 
 Vue.prototype.$axios = axios
 Vue.use(VueLazyLoad, {
   loading: require("./assets/image/uploading.gif")
 })
-//导入base.less样式表
-import './assets/less/base.less'
-import './assets/less/variables.less'
+
 
 Vue.config.productionTip = false
 
